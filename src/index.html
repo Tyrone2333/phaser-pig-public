@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>2018利郎年终福利会</title>
+
+
+    <!--<script src="../src/lib/vconsole.min.js" charset="utf-8"></script>-->
+    <!--<script>-->
+    <!--// init vConsole-->
+    <!--var vConsole = new VConsole();-->
+    <!--</script>-->
+
+
+    <script charset="utf-8">
+
+        function deepCopy(obj) {
+            let newObj = obj.constructor === Array ? [] : {}   //判断是深拷贝对象还是数组
+
+            for (let i in obj) {
+                if (typeof obj[i] === 'object') {
+                    newObj[i] = deepCopy(obj[i])    //  如果要拷贝的对象的属性依然是个复合类型，递归
+                } else {
+                    newObj[i] = obj[i]
+                }
+            }
+
+            return newObj
+        }
+
+        //判断是否在微信中打开
+        function isInWeixin() {
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+    </script>
+
+    <script>
+        // 百度统计代码
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?8ad4c634286cbe3940914ed4ef3d9054";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+</head>
+
+<body>
+
+<div id="place-holder-div"></div>
+
+<!--图片预加载 BEGIN-->
+<div class="page page-preload">
+    <div class="progress">
+        <!--<div class="progressbar"></div>-->
+        <img src="../resource/image/icon/loading.gif" alt="">
+    </div>
+    <div class="progresstext">
+        正加载资源: <span class="current"></span>/
+        <span class="total"></span>
+    </div>
+</div>
+<script src="../src/lib/resLoader.js"></script>
+<script>
+    // 预加载
+    resloader({
+        //imageData expected a JSON or Array
+        resources: [
+            // 游戏基础图片
+            "../resource/image/pigpig.png",
+            "../resource/image/pigtilemap_tileset.png",
+            "../resource/image/arrow.png",
+            // "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/encircling-light-white.png",
+            // "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/encirclingLight.png",
+            "../resource/image/fu.png",
+
+            // 页面基础图片
+            "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/guide.jpg",
+            "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/home-bg.jpg",
+            "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/sprites.png",
+
+            // 晒战绩生成图片 BEGIN
+            "../resource/image/lilanz-letao-logo.png",
+            // 关卡图,关卡会在开始游戏的时候加载
+            // 为什么不用 cdn? html2canvas 里无法生成这个跨域图片,即使已经缓存了
+            // 注释,为了不让 url-loader 把他打到另外的文件夹
+            // "../resource/image/level1-bg.jpg",
+
+            // 福利会公众号二维码
+            // "../resource/image/qrcode.png",
+            // 晒战绩生成图片 END
+
+            // 摇一摇图片
+            // "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/yyy-08.png",
+            // "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/yyy-09.png",
+
+            // 奖品图片
+            "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/coffee-cup.png", "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/pot.png", "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/scarf.png", "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/sock.png", "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/tea-set.png", "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/ticket.png",
+        ],
+        onStart: function (total) {
+            console.log('onStart:' + total)
+        },
+        onProgress: function (current, total) {
+            console.log("图片预加载进度: " + current + '/' + total)
+            var $ = document.querySelector.bind(document)
+            $('.progresstext .current').innerText = current
+            $('.progresstext .total').innerText = total
+
+        },
+        onComplete: function (total, result) {
+            console.log('图片预加载请求完成,总数: ' + total)
+            document.querySelector(".page-preload").style.display = "none"
+        }
+    });
+</script>
+<!--图片预加载 END-->
+
+
+<!-- 模版页 BEGIN -->
+
+<!--游戏结束的成绩,排行等文本-->
+<script id="game-result-text-wrapper" type="text/html">
+    <p>你的成绩为{{=score}}分</p>
+    <p>成功击败全国{{=defeatPercentage}}%的玩家</p>
+    <p>最佳成绩为{{=highestScore}}分</p>
+
+    <p>你还有{{=drawNum}}次抽奖机会</p>
+</script>
+<!-- 解锁关卡 -->
+<script id="page-select-container" type="text/html">
+    <div class="score-wrapper">最高分: {{=maxScore}}</div>
+    <div class="score-wrapper">剩余: <span class="remain-time-text">{{=canPlayGameNum}}</span>次</div>
+
+    <div class="level-wrapper clearfix">
+        {{for (var i = 1; i <= 7; i++) {}}
+        {{if (i <= unlockNum) {}}
+        <div class="sprites sprite-unlock"><span class="level">{{=i}}</span></div>
+        {{ }else{ }}
+        <div class="sprites sprite-locked"></div>
+        {{ } }}
+        {{ } }}
+    </div>
+
+    <div class="btn-start triangle_border_right">
+        <span></span>
+    </div>
+    <p class="start-bottom">开始</p>
+</script>
+<!-- 模版页 END -->
+
+
+<!--不必做成模版的页面-->
+<!--主页-->
+<div class="page page-home hide">
+    <div class="container">
+
+        <img class="lilanz-letao-logo" src="../resource/image/lilanz-letao-logo.png" alt="">
+        <div class="btn-wrapper">
+            <div class="sprites sprite-start-game"></div>
+            <div class="remain-time">
+                <div class="sprites sprite-remain-time-left"></div>
+                <span class="remain-time-text">0</span>
+                <div class="sprites sprite-remain-time-right"></div>
+            </div>
+
+            <div class="btn-float">
+                <div class="left">
+                    <div class="sprites sprite-rule"></div>
+                    <div class="sprites sprite-rank"></div>
+                </div>
+                <div class="right">
+                    <div class="sprites sprite-prize"></div>
+                    <div class="sprites sprite-list"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--规则页面-->
+<div class="page page-rule hide">
+    <div class="btn-close">X</div>
+    <div class="container">
+
+        <!-- 活动规则 -->
+        <div class="one-board">
+            <div class="sprites sprite-rule"></div>
+
+            <!--<p>活动时间</p>-->
+            <!--<p>2018年12月7日 &#45;&#45; 2019年1月3日</p>-->
+
+            <!--默认的样式 ol 列表会在 padding 中,所以还是手写序号-->
+            <ol>
+                <li>1、 每人每日5次游戏机会</li>
+                <li>2、 每次到达终点，成功闯关即可获得抽奖机会。</li>
+                <li>3、 继续下一关的挑战，到达终点即可获得抽奖机会,以此类推。</li>
+                <li>4、 每关游戏的通关抽奖礼品均不一样，祝君好运！</li>
+                <li>5、 游戏奖品在2018-12-07开始领取，有效期为中奖之日起10日内,请在奖品领取有效期内进行领取！</li>
+            </ol>
+
+        </div>
+
+
+        <!-- 奖品展示 -->
+        <div class="one-board">
+            <div class="sprites sprite-prize"></div>
+
+            <table>
+                <tbody>
+                <tr>
+                    <td><img
+                            src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/ticket.png"
+                            alt=""></td>
+                    <td><img src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/coffee-cup.png"
+                             alt=""></td>
+                </tr>
+                <tr>
+                    <td>入场券</td>
+                    <td>欧式陶瓷咖啡杯</td>
+                </tr>
+
+                <tr>
+                    <td><img src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/sock.png" alt="">
+                    </td>
+                    <td><img src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/sock-bundle.png"
+                             alt=""></td>
+                </tr>
+                <tr>
+                    <td>袜子</td>
+                    <td>袜子组合</td>
+                </tr>
+
+                <tr>
+                    <td><img src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/scarf.png" alt="">
+                    </td>
+                    <td><img src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/pot.png" alt=""></td>
+                </tr>
+                <tr>
+                    <td>围巾</td>
+                    <td>空谷幽兰锅</td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <img src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/tea-set-2.png"
+                             alt="">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">LILANZ 陶瓷茶具套装</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<!--中奖名单页面-->
+<div class="page page-prize-list hide">
+    <div class="btn-close">X</div>
+    <div class="container">
+
+        <!-- 中奖名单 -->
+        <div class="one-board">
+            <div class="sprites sprite-winner-list"></div>
+            <table class="table-line">
+                <thead>
+                <tr>
+                    <td>昵称</td>
+                    <td>手机号</td>
+                    <td>奖品</td>
+                </tr>
+                </thead>
+                <tbody class="page-prize-list-body">
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<!-- 我的奖品页面 -->
+<div class="page page-my-prize hide">
+    <div class="btn-close">X</div>
+    <div class="container">
+
+        <!-- 我的奖品 -->
+        <div class="one-board my-prize hide">
+            <div class="sprites sprite-my-prize"></div>
+            <table>
+                <tbody class="sprite-my-prize-body table-line"></tbody>
+            </table>
+        </div>
+
+        <!-- ·领奖信息· -->
+        <div class="one-board prize-regist">
+            <!-- 占位用 div -->
+            <div></div>
+
+            <h1>·领奖信息·</h1>
+
+            <table>
+                <tbody>
+                <tr>
+                    <td>本人姓名</td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>联系电话</td>
+                    <td><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>身份证号</td>
+                    <td><input type="text"></td>
+                </tr>
+                </tbody>
+            </table>
+
+            <button class="btn-save-prize-info">保存</button>
+        </div>
+
+        <!-- 领奖须知 -->
+        <div class="one-board">
+            <!-- 占位用 div -->
+            <div></div>
+
+            <h2>·领奖时间·</h2>
+            <p>2018.12.X-2019.01.X</p>
+            <br>
+
+            <h2>·领奖须知·</h2>
+            <ol>
+                <li>中奖者需本人凭借中奖页面（截图无效）在领奖日期内到指定领取地址领奖</li>
+                <li>中奖者未能在指定日期内领取奖品，则视为自动放弃</li>
+                <li>本活动最终解释权归利郎公司所有</li>
+            </ol>
+            <br>
+
+            <h2>·领奖地址·</h2>
+            <p>福建省泉州晋江市青阳长兴路200号利郎总部</p>
+        </div>
+
+    </div>
+</div>
+
+
+<!--排行榜页面-->
+<div class="page page-rank hide">
+    <div class="btn-close">X</div>
+    <div class="container">
+        <div class="sprites sprite-rank-title"></div>
+        <table>
+            <thead>
+            <tr>
+                <td>排行</td>
+                <td>昵称</td>
+                <td>最高分</td>
+            </tr>
+            </thead>
+            <tbody class="page-rank-tbody">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--晒晒战绩页面-->
+<div class="page page-share hide">
+
+    <div class="btn-close">X</div>
+
+    <!--截屏声音-->
+    <audio id="screenshot-audio" src="../resource/audio/screenshot.mp3"></audio>
+
+    <div class="out-box"></div>
+
+    <div class="container bg-world">
+        <img class="lilanz-letao-logo" src="../resource/image/lilanz-letao-logo.png" alt="">
+
+        <!-- 一个白色半透明容器 -->
+        <div class="content-wrapper">
+
+            <!-- 二维码容器 -->
+            <div class="qr-wrapper">
+                <!--<img src="../resource/image/qrcode.png" class="qrcode">-->
+                <img class="qrcode" src=" ${ require('../resource/image/qrcode.png') } " alt="">
+
+                <div class="ribbon-wrapper">
+                    <!--<img class="ribbon-img" src="../resource/image/ribbon.png" alt="">-->
+                    <img class="ribbon-img" src=" ${ require('../resource/image/ribbon.png') } " alt="">
+
+                    <!-- 游戏结果展示,头像 + 分数 -->
+                    <div class="game-show">
+                        <div class="avatar-wrapper">
+                            <!--这里会放置微信头像-->
+                            <!--<img class="avatar" src="../resource/image/avatar.png" alt="">-->
+                        </div>
+                        <p>游戏得分 <span class="score">000</span></p>
+                    </div>
+                </div>
+                <p> · 长按保存图片 · </p>
+            </div>
+            <div class="tips-wrapper">
+                开始型动 · 赢取好礼 · 开心过节
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--游戏页面-->
+<div class="page page-game hide">
+
+    <!--新手引导图片-->
+    <div class="guide"></div>
+
+    <!--游戏主体的容器-->
+    <div id="phaser-app" class="bg-world"></div>
+
+    <!-- 每一关的背景图-->
+    <!--<div class="bg-world"></div>-->
+
+    <!--临时隐藏-->
+    <!--<div class="hide">-->
+    <!--内部测试警告提醒-->
+    <!--<div class="warn">-->
+    <!--当前游戏为测试内容,请勿外传-->
+    <!--</div>-->
+
+    <!--左上角,得分-->
+    <div class="score-panel">
+        得分: <span class="score">0</span>
+    </div>
+
+    <!--右上角,音乐按钮-->
+    <div class="btn-music">
+        <i id="music-switch" class="icon iconfont icon-audiohigh"></i>
+    </div>
+
+    <div class="btn-snow">
+        <i id="snow-switch" class="icon iconfont icon-xue"></i>
+    </div>
+
+    <!--</div>-->
+
+    <!--游戏结束,倒计时相关内容-->
+    <div class="container countdown-wrapper hide">
+        <div class="countdown">3</div>
+        <div class="gameover">
+            <div class="score-wrapper">
+                游戏结束,分数:
+            </div>
+            <div class="regame">
+                重新开始
+            </div>
+        </div>
+    </div>
+
+    <!--游戏结果页面 胜利 -->
+    <div class="container game-result game-win hide">
+        <div class="img-wrapper game-padding">
+
+            <!--<img class="encircling-light challenge-top rotate" src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/encirclingLight.png" alt="">-->
+
+            <div class="sprites sprite-success"></div>
+        </div>
+
+        <!--文本使用了模版-->
+        <div class="text-wrapper"></div>
+
+        <div class="btn-wrapper">
+            <div class="btn-long btn-red luck-draw">赶紧去抽奖</div>
+            <!--<div class="btn-long btn-red game-again hide">再玩一次</div>-->
+            <div class="btn-long btn-red go-select">回到选关</div>
+
+            <div class="btn-float clearfix">
+                <!--<div class="btn-short btn-green rank">排行榜</div>-->
+
+                <div class="btn-short btn-green share">晒晒战绩</div>
+                <div class="btn-short btn-green go-home">回到首页</div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--游戏结果页面 失败 -->
+    <div class="container game-result game-lose hide">
+        <div class="img-wrapper game-padding">
+
+            <!--<img class="encircling-light " src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/encirclingLight.png" alt="">-->
+
+            <div class="sprites sprite-failure"></div>
+        </div>
+        <!--文本使用了模版-->
+        <div class="text-wrapper"></div>
+
+        <div class="btn-wrapper">
+            <!--<div class="btn-long btn-red game-again">再玩一次</div>-->
+            <div class="btn-long btn-red go-select">回到选关</div>
+
+            <div class="btn-float clearfix">
+                <!--<div class="btn-short btn-green rank">排行榜</div>-->
+                <div class="btn-short btn-green share">晒晒战绩</div>
+                <div class="btn-short btn-green go-home">回到首页</div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 抽奖结果页面 有奖品-->
+    <div class="container draw-result has-gift hide">
+        <div class="img-wrapper draw-padding">
+            <!--<img class="encircling-light gift-top rotate " src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/encirclingLight.png" alt="">-->
+            <!--<div class="sprites sprite-has-gift"></div>-->
+            <img class="gift-img" src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/ticket.png"
+                 alt="">
+            <!-- <img class="success" src="../../resource/image/gift.png" alt=""> -->
+        </div>
+        <div class="text-wrapper">
+            <p class="grade">---</p>
+            <p class="prize">---</p>
+        </div>
+        <div class="btn-wrapper">
+            <div class="btn-long btn-red prize-detail">查看奖品详情</div>
+            <div class="btn-long btn-red game-next">去下一关</div>
+            <!--<div class="btn-long btn-red go-select">回到选关</div>-->
+            <div class="btn-long btn-red luck-draw hide">再抽一次</div>
+            <div class="btn-float clearfix">
+                <!--<div class="btn-short btn-green rank">排行榜</div>-->
+                <div class="btn-short btn-green share">晒晒战绩</div>
+
+                <div class="btn-short btn-green go-home">回到首页</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 抽奖结果页面 无奖品-->
+    <div class="container draw-result no-gift hide">
+        <div class="img-wrapper draw-padding">
+            <!--<img class="encircling-light " src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/encircling-light-white.png" alt="">-->
+            <div class="sprites sprite-no-gift"></div>
+            <!-- <img class="success" src="../../resource/image/gift.png" alt=""> -->
+        </div>
+        <div class="text-wrapper">
+            <p>你和奖品擦肩而过</p>
+        </div>
+        <div class="btn-wrapper">
+            <!--<div class="btn-long btn-red game-again">再玩一次</div>-->
+            <div class="btn-long btn-red game-next">去下一关</div>
+            <!--<div class="btn-long btn-red go-select">回到选关</div>-->
+            <div class="btn-float clearfix">
+                <!--<div class="btn-short btn-green rank">排行榜</div>-->
+                <div class="btn-short btn-green share">晒晒战绩</div>
+                <div class="btn-short btn-green go-home">回到首页</div>
+            </div>
+        </div>
+    </div>
+    <!-- 摇一摇页面 -->
+    <div class="container shake-shake hide">
+        <audio id="shakeSound" src="../resource/audio/shake.mp3"></audio>
+        <div class="rock">
+            <!--<img class="rock-top" src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/yyy-08.png" alt="">-->
+            <!--<img class="rock-bottom" src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/yyy-09.png" alt="">-->
+            <img class="rock-top" src=" ${ require('../resource/image/yyy-08.png') } " alt="">
+            <img class="rock-bottom" src=" ${ require('../resource/image/yyy-09.png') } " alt="">
+
+        </div>
+
+        <div class="prompt-text">摇一摇或双击抽奖</div>
+        <div class="tip">本关可能获得奖品:</div>
+
+        <!-- 奖品列表展示 -->
+        <div class="prize-list">
+        </div>
+        <!--<img src="../../resource/image/shake-shake.png" alt="摇一摇">-->
+    </div>
+</div>
+
+<!--领奖信息页面 (领票登记页) 废弃-->
+<!-- <div class="page page-prize hide">
+<div class="btn-close"> <i class="icon iconfont icon-14CIRCLE"></i> </div>
+<div class="container">
+<h2>2018利郎年底</h2>
+<h1>狂欢福利会</h1>
+
+<h3>•领票信息登记•</h3>
+
+<div class="panel ">
+    <div class="item">
+        <label>手 机</label>
+        <input type="text" name="phone" id="nick" />
+    </div>
+    <div class="item">
+        <label>姓 名</label>
+        <input type="text" name="nick" />
+    </div>
+
+    <div class="item">
+        <label>身份证</label>
+        <input type="text" name="idcard" />
+    </div>
+</div>
+
+<button class="submit">提交</button>
+
+<div class="tips-panel">
+    <p>领票地点：福建省晋江市长兴路200号 利郎总部</p>
+    <p>领票时间：2018年12月7日-2019年?月?日</p>
+    <p>领票说明：微信领票信息登记成功以后，凭身份证到总部领票处领取福利会入场券2张，或拨打客服热线进行预定。</p>
+    <p>咨询电话：<span class="tel">82039926</span> <span class="tel">82039930</span> <span class="tel">82039932</span>
+    </p>
+</div>
+
+<div class="tips-panel">
+    <p>为了您购物的方便与安全，请勿携带大包。儿童与孕妇禁止 入场。(工作人员有权限制大包不得带入场)</p>
+</div>
+
+</div>
+</div> -->
+
+
+<!-- 闭关解锁页面 -->
+<div class="page page-select hide">
+    <div class="btn-close">X</div>
+    <!--使用模版-->
+    <div class="container">
+    </div>
+</div>
+
+<!--不必做成模版的页面 END-->
+
+<script src="../src/lib/zepto.min.js"></script>
+<script src="../src/lib/phaser.min.js"></script>
+<script src="../src/lib/flexible.min.js"></script>
+<script src="../src/lib/dialog.js" charset=utf-8></script>
+
+</body>
+
+</html>
