@@ -43,17 +43,6 @@
 
     </script>
 
-    <script>
-        // 百度统计代码
-        var _hmt = _hmt || [];
-        (function () {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?8ad4c634286cbe3940914ed4ef3d9054";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
-
 </head>
 
 <body>
@@ -81,8 +70,8 @@
             "../resource/image/pigpig.png",
             "../resource/image/pigtilemap_tileset.png",
             "../resource/image/arrow.png",
-            // "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/encircling-light-white.png",
-            // "http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/encirclingLight.png",
+            "../resource/image/encircling-light-white.png",
+            "../resource/image/encircling-light-gold.png",
             "../resource/image/fu.png",
 
             // 页面基础图片
@@ -474,7 +463,7 @@
     <div class="container game-result game-win hide">
         <div class="img-wrapper game-padding">
 
-            <!--<img class="encircling-light challenge-top rotate" src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/encirclingLight.png" alt="">-->
+            <img class="encircling-light challenge-top rotate" src="../resource/image/encircling-light-gold.png" alt="">
 
             <div class="sprites sprite-success"></div>
         </div>
@@ -501,8 +490,6 @@
     <div class="container game-result game-lose hide">
         <div class="img-wrapper game-padding">
 
-            <!--<img class="encircling-light " src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/encirclingLight.png" alt="">-->
-
             <div class="sprites sprite-failure"></div>
         </div>
         <!--文本使用了模版-->
@@ -524,7 +511,8 @@
     <!-- 抽奖结果页面 有奖品-->
     <div class="container draw-result has-gift hide">
         <div class="img-wrapper draw-padding">
-            <!--<img class="encircling-light gift-top rotate " src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/encirclingLight.png" alt="">-->
+            <img class="encircling-light " src="../resource/image/encircling-light-gold.png" alt="">
+
             <!--<div class="sprites sprite-has-gift"></div>-->
             <img class="gift-img" src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/prize/ticket.png"
                  alt="">
@@ -551,9 +539,8 @@
     <!-- 抽奖结果页面 无奖品-->
     <div class="container draw-result no-gift hide">
         <div class="img-wrapper draw-padding">
-            <!--<img class="encircling-light " src="http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/encircling-light-white.png" alt="">-->
+            <img class="encircling-light " src="../resource/image/encircling-light-white.png" alt="">
             <div class="sprites sprite-no-gift"></div>
-            <!-- <img class="success" src="../../resource/image/gift.png" alt=""> -->
         </div>
         <div class="text-wrapper">
             <p>你和奖品擦肩而过</p>

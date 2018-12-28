@@ -89,7 +89,12 @@ router.get('/pigApi', async function (req, res, next) {
 
         // 获胜
         if (result === "win") {
-            res.send({"errcode":0,"data":{"defeatsPercen":"0.63","maxScore":2600,"CanPlayGameNum":819,"prizeid":"48","prizename":"入场券"},"errMsg":"ok"})
+            let hasPrize = Math.random() > 0.5
+            if (hasPrize){
+                res.send({"errcode":0,"data":{"defeatsPercen":"0.63","maxScore":2600,"CanPlayGameNum":819,"prizeid":"48","prizename":"入场券"},"errMsg":"ok"})
+            } else {
+                res.send({"errcode":0,"data":{"defeatsPercen":"0.63","maxScore":2600,"CanPlayGameNum":819,"prizeid":"0","prizename":"运气还差一点"},"errMsg":"ok"})
+            }
         } else {
             // 失败
             res.send({"errcode":0,"data":{"defeatsPercen":"0.63","maxScore":2600,"CanPlayGameNum":820,"prizeid":"0","prizename":"无奖品"},"errMsg":"ok"})
