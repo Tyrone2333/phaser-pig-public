@@ -9,6 +9,12 @@
 > [测试地址 http://undefined.ga](http://undefined.ga)
 
 > [2018年活动地址](http://tm.lilanz.com/supersale/2018/pig/build/index.aspx)
+## 运行
+使用 yarn:
+
+    yarn
+    yarn run dev
+    
 
 ## 先看东西
 ### 主页

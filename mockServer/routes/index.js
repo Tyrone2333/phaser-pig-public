@@ -8,7 +8,7 @@ router.get('/', function (req, res, next) {
 
 router.get('/pigApi', async function (req, res, next) {
 
-    let {act, userId} = req.query
+    let {act, userId, action} = req.query
 
     // 获取用户信息
     if (act === "init") {
@@ -38,13 +38,125 @@ router.get('/pigApi', async function (req, res, next) {
     // 排行榜列表
     else if (act === "getRankList") {
 
-        res.json({"errcode":0,"data":[{"nickName":"林**","maxScore":2600},{"nickName":"《**","maxScore":120},{"nickName":"黑**","maxScore":120},{"nickName":"一**","maxScore":120},{"nickName":"雪**","maxScore":120},{"nickName":"小**","maxScore":120},{"nickName":"粒**","maxScore":120},{"nickName":"T**","maxScore":120},{"nickName":"伟**","maxScore":120},{"nickName":"糊**","maxScore":120},{"nickName":"a**","maxScore":120},{"nickName":"包**","maxScore":120},{"nickName":"普**","maxScore":120},{"nickName":"ミ**","maxScore":120},{"nickName":"终**","maxScore":120},{"nickName":"妙**","maxScore":120},{"nickName":"初**","maxScore":120},{"nickName":"小**","maxScore":120},{"nickName":"拉**","maxScore":120},{"nickName":"吴**","maxScore":120},{"nickName":"小**","maxScore":120},{"nickName":"傅**","maxScore":120},{"nickName":"m**","maxScore":120},{"nickName":"何**","maxScore":120},{"nickName":"一**","maxScore":120},{"nickName":"行**","maxScore":120},{"nickName":"&**","maxScore":120},{"nickName":"懒**","maxScore":120},{"nickName":"林**","maxScore":120},{"nickName":"易**","maxScore":120},{"nickName":"美**","maxScore":120},{"nickName":"枭**","maxScore":120},{"nickName":"强**","maxScore":120},{"nickName":"H**","maxScore":120},{"nickName":"小**","maxScore":120},{"nickName":"逸**","maxScore":120},{"nickName":"C**","maxScore":120},{"nickName":"Y**","maxScore":120},{"nickName":"Y**","maxScore":120},{"nickName":"I**","maxScore":120},{"nickName":"冬**","maxScore":120},{"nickName":"陈**","maxScore":120},{"nickName":"王**","maxScore":120},{"nickName":"刘**","maxScore":120},{"nickName":"然**","maxScore":120},{"nickName":"重**","maxScore":120},{"nickName":"鱼**","maxScore":120},{"nickName":"☆**","maxScore":120},{"nickName":"高**","maxScore":120},{"nickName":"向**","maxScore":120}],"errMsg":""})
+        res.json({
+            "errcode": 0,
+            "data": [{"nickName": "林**", "maxScore": 2600}, {"nickName": "《**", "maxScore": 120}, {
+                "nickName": "黑**",
+                "maxScore": 120
+            }, {"nickName": "一**", "maxScore": 120}, {"nickName": "雪**", "maxScore": 120}, {
+                "nickName": "小**",
+                "maxScore": 120
+            }, {"nickName": "粒**", "maxScore": 120}, {"nickName": "T**", "maxScore": 120}, {
+                "nickName": "伟**",
+                "maxScore": 120
+            }, {"nickName": "糊**", "maxScore": 120}, {"nickName": "a**", "maxScore": 120}, {
+                "nickName": "包**",
+                "maxScore": 120
+            }, {"nickName": "普**", "maxScore": 120}, {"nickName": "ミ**", "maxScore": 120}, {
+                "nickName": "终**",
+                "maxScore": 120
+            }, {"nickName": "妙**", "maxScore": 120}, {"nickName": "初**", "maxScore": 120}, {
+                "nickName": "小**",
+                "maxScore": 120
+            }, {"nickName": "拉**", "maxScore": 120}, {"nickName": "吴**", "maxScore": 120}, {
+                "nickName": "小**",
+                "maxScore": 120
+            }, {"nickName": "傅**", "maxScore": 120}, {"nickName": "m**", "maxScore": 120}, {
+                "nickName": "何**",
+                "maxScore": 120
+            }, {"nickName": "一**", "maxScore": 120}, {"nickName": "行**", "maxScore": 120}, {
+                "nickName": "&**",
+                "maxScore": 120
+            }, {"nickName": "懒**", "maxScore": 120}, {"nickName": "林**", "maxScore": 120}, {
+                "nickName": "易**",
+                "maxScore": 120
+            }, {"nickName": "美**", "maxScore": 120}, {"nickName": "枭**", "maxScore": 120}, {
+                "nickName": "强**",
+                "maxScore": 120
+            }, {"nickName": "H**", "maxScore": 120}, {"nickName": "小**", "maxScore": 120}, {
+                "nickName": "逸**",
+                "maxScore": 120
+            }, {"nickName": "C**", "maxScore": 120}, {"nickName": "Y**", "maxScore": 120}, {
+                "nickName": "Y**",
+                "maxScore": 120
+            }, {"nickName": "I**", "maxScore": 120}, {"nickName": "冬**", "maxScore": 120}, {
+                "nickName": "陈**",
+                "maxScore": 120
+            }, {"nickName": "王**", "maxScore": 120}, {"nickName": "刘**", "maxScore": 120}, {
+                "nickName": "然**",
+                "maxScore": 120
+            }, {"nickName": "重**", "maxScore": 120}, {"nickName": "鱼**", "maxScore": 120}, {
+                "nickName": "☆**",
+                "maxScore": 120
+            }, {"nickName": "高**", "maxScore": 120}, {"nickName": "向**", "maxScore": 120}],
+            "errMsg": ""
+        })
 
     }
 
     // 中奖名单
     else if (act === "getPrizeList") {
-        res.json({"errcode":0,"data":[{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"茶具"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"围巾"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"茶具"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"围巾"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"围巾"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"茶具"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"茶具"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"围巾"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"围巾"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"咖啡杯"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"咖啡杯"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"咖啡杯"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"围巾"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"茶具"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"咖啡杯"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"袜子"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"袜子"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"茶具"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"咖啡杯"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"袜子"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"汤锅"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"汤锅"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"汤锅"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"汤锅"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"袜子"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"咖啡杯"},{"nickname":"%e6%9e%97**","tel":"137****4951","prize":"茶具"},{"nickname":"%e6%9d%8e**","tel":"152****5009","prize":"咖啡杯"}],"errMsg":""})
+        res.json({
+            "errcode": 0,
+            "data": [{"nickname": "%e6%9e%97**", "tel": "137****4951", "prize": "茶具"}, {
+                "nickname": "%e6%9e%97**",
+                "tel": "137****4951",
+                "prize": "围巾"
+            }, {"nickname": "%e6%9e%97**", "tel": "137****4951", "prize": "茶具"}, {
+                "nickname": "%e6%9e%97**",
+                "tel": "137****4951",
+                "prize": "围巾"
+            }, {"nickname": "%e6%9e%97**", "tel": "137****4951", "prize": "围巾"}, {
+                "nickname": "%e6%9e%97**",
+                "tel": "137****4951",
+                "prize": "茶具"
+            }, {"nickname": "%e6%9e%97**", "tel": "137****4951", "prize": "茶具"}, {
+                "nickname": "%e6%9e%97**",
+                "tel": "137****4951",
+                "prize": "围巾"
+            }, {"nickname": "%e6%9e%97**", "tel": "137****4951", "prize": "围巾"}, {
+                "nickname": "%e6%9e%97**",
+                "tel": "137****4951",
+                "prize": "咖啡杯"
+            }, {"nickname": "%e6%9e%97**", "tel": "137****4951", "prize": "咖啡杯"}, {
+                "nickname": "%e6%9e%97**",
+                "tel": "137****4951",
+                "prize": "咖啡杯"
+            }, {"nickname": "%e6%9e%97**", "tel": "137****4951", "prize": "围巾"}, {
+                "nickname": "%e6%9e%97**",
+                "tel": "137****4951",
+                "prize": "茶具"
+            }, {"nickname": "%e6%9e%97**", "tel": "137****4951", "prize": "咖啡杯"}, {
+                "nickname": "%e6%9e%97**",
+                "tel": "137****4951",
+                "prize": "袜子"
+            }, {"nickname": "%e6%9e%97**", "tel": "137****4951", "prize": "袜子"}, {
+                "nickname": "%e6%9e%97**",
+                "tel": "137****4951",
+                "prize": "茶具"
+            }, {"nickname": "%e6%9e%97**", "tel": "137****4951", "prize": "咖啡杯"}, {
+                "nickname": "%e6%9e%97**",
+                "tel": "137****4951",
+                "prize": "袜子"
+            }, {"nickname": "%e6%9e%97**", "tel": "137****4951", "prize": "汤锅"}, {
+                "nickname": "%e6%9e%97**",
+                "tel": "137****4951",
+                "prize": "汤锅"
+            }, {"nickname": "%e6%9e%97**", "tel": "137****4951", "prize": "汤锅"}, {
+                "nickname": "%e6%9e%97**",
+                "tel": "137****4951",
+                "prize": "汤锅"
+            }, {"nickname": "%e6%9e%97**", "tel": "137****4951", "prize": "袜子"}, {
+                "nickname": "%e6%9e%97**",
+                "tel": "137****4951",
+                "prize": "咖啡杯"
+            }, {"nickname": "%e6%9e%97**", "tel": "137****4951", "prize": "茶具"}, {
+                "nickname": "%e6%9d%8e**",
+                "tel": "152****5009",
+                "prize": "咖啡杯"
+            }],
+            "errMsg": ""
+        })
     }
 
     // (废弃) 获取我的奖品
@@ -90,14 +202,44 @@ router.get('/pigApi', async function (req, res, next) {
         // 获胜
         if (result === "win") {
             let hasPrize = Math.random() > 0.5
-            if (hasPrize){
-                res.send({"errcode":0,"data":{"defeatsPercen":"0.63","maxScore":2600,"CanPlayGameNum":819,"prizeid":"48","prizename":"入场券"},"errMsg":"ok"})
+            if (hasPrize) {
+                res.send({
+                    "errcode": 0,
+                    "data": {
+                        "defeatsPercen": "0.63",
+                        "maxScore": 2600,
+                        "CanPlayGameNum": 819,
+                        "prizeid": "48",
+                        "prizename": "入场券"
+                    },
+                    "errMsg": "ok"
+                })
             } else {
-                res.send({"errcode":0,"data":{"defeatsPercen":"0.63","maxScore":2600,"CanPlayGameNum":819,"prizeid":"0","prizename":"运气还差一点"},"errMsg":"ok"})
+                res.send({
+                    "errcode": 0,
+                    "data": {
+                        "defeatsPercen": "0.63",
+                        "maxScore": 2600,
+                        "CanPlayGameNum": 819,
+                        "prizeid": "0",
+                        "prizename": "运气还差一点"
+                    },
+                    "errMsg": "ok"
+                })
             }
         } else {
             // 失败
-            res.send({"errcode":0,"data":{"defeatsPercen":"0.63","maxScore":2600,"CanPlayGameNum":820,"prizeid":"0","prizename":"无奖品"},"errMsg":"ok"})
+            res.send({
+                "errcode": 0,
+                "data": {
+                    "defeatsPercen": "0.63",
+                    "maxScore": 2600,
+                    "CanPlayGameNum": 820,
+                    "prizeid": "0",
+                    "prizename": "无奖品"
+                },
+                "errMsg": "ok"
+            })
         }
 
     }
@@ -108,6 +250,50 @@ router.get('/pigApi', async function (req, res, next) {
             "errcode": 0,
             "data": "",
             "errMsg": ""
+        })
+    }
+
+    // =================== 下面是联谊抽奖 ===================
+    else if (action === "getSignList") {
+        res.json({
+            "errcode": 0,
+            "data": [{
+                "id": 1,
+                "cname": "李清峰",
+                "department": "信息管理中心",
+                "mobile": "15260825009",
+                "avatar": "http://shp.qpic.cn/bizmp/aFWqEucQiblaQ9VU2nArnomOPTCXKSsHJAroYAn7jnj9Xs91VkEB9mQ/",
+                "signtime": "2019-01-24 15:24:03"
+            }, {
+                "id": 2,
+                "cname": "林文印",
+                "department": "信息管理中心",
+                "mobile": "13799514951",
+                "avatar": "http://p.qlogo.cn/bizmail/EO5lQGD9qJkgGgwBL6fEjPrDfb7rJib1m1FlOaNaK8ia8pnF4ncFqiamA/0",
+                "signtime": "2019-01-24 15:27:52"
+            }, {
+                "id": 3,
+                "cname": "薛灵敏",
+                "department": "信息管理中心",
+                "mobile": "13055812566",
+                "avatar": "http://p.qlogo.cn/bizmail/7NMZiaypxPUicQoKWogla0rCFRvHorPZqLAMb1xibBoGsUkibAJ0CpMEeA/0",
+                "signtime": "2019-01-24 15:34:15"
+            }, {
+                "id": 4,
+                "cname": "李清峰2",
+                "department": "信息管理中心",
+                "mobile": "17076610538",
+                "avatar": "http://p.qlogo.cn/bizmail/Ykn1DnusOsnDic3SURtpHXtnJoOT8XEzU6ztQicBwhHvPuMiaFTHicZy0w/",
+                "signtime": "2019-01-24 15:49:29"
+            }, {
+                "id": 5,
+                "cname": "朱小淋",
+                "department": "信息管理中心",
+                "mobile": "13808517130",
+                "avatar": "http://p.qlogo.cn/bizmail/anico0xUqpyUZyVvLzC9f9K8Ze5WxdB00Nac4C9wMCFiadTFTibGZdDWA/0",
+                "signtime": "2019-01-24 15:53:48"
+            }],
+            "errmsg": ""
         })
     }
     else {
