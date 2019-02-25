@@ -252,50 +252,6 @@ router.get('/pigApi', async function (req, res, next) {
             "errMsg": ""
         })
     }
-
-    // =================== 下面是联谊抽奖 ===================
-    else if (action === "getSignList") {
-        res.json({
-            "errcode": 0,
-            "data": [{
-                "id": 1,
-                "cname": "李清峰",
-                "department": "信息管理中心",
-                "mobile": "15260825009",
-                "avatar": "http://shp.qpic.cn/bizmp/aFWqEucQiblaQ9VU2nArnomOPTCXKSsHJAroYAn7jnj9Xs91VkEB9mQ/",
-                "signtime": "2019-01-24 15:24:03"
-            }, {
-                "id": 2,
-                "cname": "林文印",
-                "department": "信息管理中心",
-                "mobile": "13799514951",
-                "avatar": "http://p.qlogo.cn/bizmail/EO5lQGD9qJkgGgwBL6fEjPrDfb7rJib1m1FlOaNaK8ia8pnF4ncFqiamA/0",
-                "signtime": "2019-01-24 15:27:52"
-            }, {
-                "id": 3,
-                "cname": "薛灵敏",
-                "department": "信息管理中心",
-                "mobile": "13055812566",
-                "avatar": "http://p.qlogo.cn/bizmail/7NMZiaypxPUicQoKWogla0rCFRvHorPZqLAMb1xibBoGsUkibAJ0CpMEeA/0",
-                "signtime": "2019-01-24 15:34:15"
-            }, {
-                "id": 4,
-                "cname": "李清峰2",
-                "department": "信息管理中心",
-                "mobile": "17076610538",
-                "avatar": "http://p.qlogo.cn/bizmail/Ykn1DnusOsnDic3SURtpHXtnJoOT8XEzU6ztQicBwhHvPuMiaFTHicZy0w/",
-                "signtime": "2019-01-24 15:49:29"
-            }, {
-                "id": 5,
-                "cname": "朱小淋",
-                "department": "信息管理中心",
-                "mobile": "13808517130",
-                "avatar": "http://p.qlogo.cn/bizmail/anico0xUqpyUZyVvLzC9f9K8Ze5WxdB00Nac4C9wMCFiadTFTibGZdDWA/0",
-                "signtime": "2019-01-24 15:53:48"
-            }],
-            "errmsg": ""
-        })
-    }
     else {
         res.send({
             errcode: 404,
