@@ -15,7 +15,7 @@ const PROJECT_PATH = process.cwd(); // 项目目录
 var definePlugin = new webpack.DefinePlugin({
     'process.env': JSON.stringify({
         NODE_ENV: 'production',
-        BASE_URL: '../gameCore.aspx',
+        BASE_URL: 'http://undefined.ga:8800/pigApi',
     }),
   __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'false')),
   WEBGL_RENDERER: true, // I did this to make webpack work, but I'm not really sure it should always be true

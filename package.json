@@ -10,7 +10,8 @@
     "dev": "npm run mockServer | npm run devServer",
     "build": "webpack  --mode=production --config webpack.production.config.js",
     "mergeAspx": "node ./autoTask/index",
-    "build&upload": "webpack  --mode=production --config webpack.production.config.js & npm run mergeAspx & cd autoTask & copyDist.bat"
+    "build&upload": "webpack  --mode=production --config webpack.production.config.js & npm run mergeAspx & cd autoTask & copyDist.bat",
+    "pm2": "pm2 start ./mockServer/bin/www"
   },
   "license": "MIT",
   "devDependencies": {
