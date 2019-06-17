@@ -6,14 +6,22 @@
 
 游戏用于2018年福利会引流，项目中涉及公司内部资料的已删除或替换
 ## 在线访问
-> [测试地址 http://undefined.ga](http://undefined.ga)
+> [测试地址 http://undefined.ga/pig/build](http://undefined.ga/pig/build)
 
 > [2018年活动地址](http://tm.lilanz.com/supersale/2018/pig/build/index.aspx)
 ## 运行
-使用 yarn:
-
+开发
+```text
     yarn
     yarn run dev
+```
+
+生产
+```text
+    yarn
+    yarn run pm2
+```
+pm2 开启后台，然后在 http服务器环境打开 /build
     
 
 ## 先看东西
