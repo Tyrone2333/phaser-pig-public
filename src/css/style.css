@@ -1,0 +1,980 @@
+body {
+  margin: 0;
+  overflow-x: hidden;
+  color: #fff;
+  font-size: 18px;
+  font-family: Helvetica, Arial, STHeiTi, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', STHeiti, '华文细黑', sans-serif;
+}
+canvas {
+  height: 100%;
+}
+.clearfix::after {
+  display: table;
+  clear: both;
+  content: "";
+  visibility: hidden;
+}
+.sprites {
+  background-image: url("http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/sprites.png");
+  background-repeat: no-repeat;
+  background-size: 13.066667rem 13.226667rem;
+}
+#phaser-app {
+  margin: 0 auto;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+.warn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: green;
+  padding: 2px;
+}
+.guide {
+  position: absolute;
+  visibility: hidden;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: url("http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/guide.jpg") no-repeat center center;
+  background-size: cover;
+}
+.bg-world {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 0;
+  background-position-x: center;
+  background-position-y: center;
+  background-size: cover;
+}
+.hide {
+  display: none;
+}
+.page {
+  z-index: 10;
+}
+.btn-close {
+  position: fixed;
+  width: 0.3rem;
+  height: 0.3rem;
+  line-height: 0.3rem;
+  font-size: 0.48rem;
+  text-align: center;
+  padding: 10px;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.4);
+  bottom: 0.933rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+.btn-close i {
+  font-size: 30px;
+}
+.page-preload .progress {
+  width: 56px;
+  height: 56px;
+  max-width: 56px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+.page-preload img {
+  width: 100%;
+}
+.page-preload .progresstext {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  color: black;
+  font-size: 16px;
+}
+.page-game {
+  z-index: 1;
+}
+.page-game .container {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  min-width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  background-color: rgba(0, 0, 0, 0.8);
+  transition: all 0.3s ease;
+  /*filter: blur(1.33rem);*/
+}
+.page-game .container .countdown {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+}
+.page-game .container .gameover {
+  font-size: 40px;
+  text-align: center;
+}
+.page-game .container .gameover .regame {
+  margin: 20px;
+}
+.page-game .score-panel {
+  position: absolute;
+  font-size: 20px;
+  top: 20px;
+  left: 20px;
+}
+.page-game .score-panel .score {
+  font-size: 1.2em;
+}
+.page-game .btn-music {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+.page-game .btn-music .icon {
+  font-size: 24px;
+}
+.page-game .btn-snow {
+  position: absolute;
+  top: 64px;
+  right: 20px;
+}
+.page-game .btn-snow .icon {
+  font-size: 24px;
+}
+.page-game .game-result .btn-long,
+.page-game .draw-result .btn-long {
+  box-sizing: border-box;
+  height: 1.066667rem;
+  border-radius: 6px;
+  padding: 0.266667rem 0.506667rem;
+  text-align: center;
+  font-size: 0.426667rem;
+  margin-bottom: 0.346667rem;
+}
+.page-game .game-result .btn-short,
+.page-game .draw-result .btn-short {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 2.333333rem;
+  height: 1.066667rem;
+  line-height: 1.066667rem;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.426667rem;
+}
+.page-game .game-result .btn-green,
+.page-game .draw-result .btn-green {
+  background-color: #00ab57;
+}
+.page-game .game-result .btn-red,
+.page-game .draw-result .btn-red {
+  background-color: #f13959;
+}
+.page-game .game-result .img-wrapper,
+.page-game .draw-result .img-wrapper {
+  position: relative;
+  padding: 1.613333rem 17%;
+}
+.page-game .game-result .img-wrapper.game-padding,
+.page-game .draw-result .img-wrapper.game-padding {
+  padding: 1.613333rem 16%;
+}
+.page-game .game-result .img-wrapper.game-padding .sprites.sprite-failure,
+.page-game .draw-result .img-wrapper.game-padding .sprites.sprite-failure {
+  width: 6.533333rem;
+  height: 2.8rem;
+  background-position: -6.533333rem 0;
+}
+.page-game .game-result .img-wrapper.game-padding .sprites.sprite-success,
+.page-game .draw-result .img-wrapper.game-padding .sprites.sprite-success {
+  width: 6.53333rem;
+  height: 2.826667rem;
+  background-position: 0 0;
+}
+.page-game .game-result .img-wrapper.draw-padding,
+.page-game .draw-result .img-wrapper.draw-padding {
+  padding: 1.613333rem 30%;
+}
+.page-game .game-result .img-wrapper.draw-padding .sprites.sprite-no-gift,
+.page-game .draw-result .img-wrapper.draw-padding .sprites.sprite-no-gift {
+  width: 3.933333rem;
+  height: 3.906667rem;
+  background-position: -3.933333rem -2.85rem;
+}
+.page-game .game-result .img-wrapper.draw-padding .sprites.sprite-has-gift,
+.page-game .draw-result .img-wrapper.draw-padding .sprites.sprite-has-gift {
+  width: 3.933333rem;
+  height: 3.906667rem;
+  background-position: 0 -2.84rem;
+}
+.page-game .game-result .img-wrapper.draw-padding .gift-img,
+.page-game .draw-result .img-wrapper.draw-padding .gift-img {
+  width: 3.933333rem;
+}
+.page-game .game-result .img-wrapper .encircling-light,
+.page-game .draw-result .img-wrapper .encircling-light {
+  position: absolute;
+  left: -15%;
+  top: -50%;
+  transform-origin: 50% 50%;
+  width: 125%;
+  z-index: -1;
+}
+.page-game .game-result .img-wrapper .encircling-light.gift-top,
+.page-game .draw-result .img-wrapper .encircling-light.gift-top {
+  top: -38%;
+}
+.page-game .game-result .img-wrapper .encircling-light.challenge-top,
+.page-game .draw-result .img-wrapper .encircling-light.challenge-top {
+  top: -50%;
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.page-game .game-result .img-wrapper .rotate,
+.page-game .draw-result .img-wrapper .rotate {
+  transition: 0.5s;
+  animation: rotate 10s linear infinite;
+  /*开始动画后无限循环，用来控制rotate*/
+}
+.page-game .game-result .text-wrapper,
+.page-game .draw-result .text-wrapper {
+  text-align: center;
+  font-size: 0.426667rem;
+}
+.page-game .game-result .text-wrapper p:last-child,
+.page-game .draw-result .text-wrapper p:last-child {
+  margin: 1.066667rem 0 1.333333rem 0;
+}
+.page-game .game-result .btn-wrapper,
+.page-game .draw-result .btn-wrapper {
+  padding: 0 2.4rem;
+}
+.page-game .game-result .btn-wrapper .btn-float div:first-child,
+.page-game .draw-result .btn-wrapper .btn-float div:first-child {
+  float: left;
+}
+.page-game .game-result .btn-wrapper .btn-float div:last-child,
+.page-game .draw-result .btn-wrapper .btn-float div:last-child {
+  float: right;
+}
+.page-game .game-result .btn-wrapper .btn-float div,
+.page-game .draw-result .btn-wrapper .btn-float div {
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+}
+.page-game .shake-shake .rock {
+  width: 4.546666rem;
+  height: 4.56rem;
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  transform: translate(-50%, 0%);
+}
+.page-game .shake-shake .rock > img {
+  position: absolute;
+  width: 4.546666rem;
+  left: 0;
+}
+.page-game .shake-shake .rock .rock-top {
+  bottom: 2.22rem;
+}
+.page-game .shake-shake .rock .rock-bottom {
+  bottom: 0;
+}
+.page-game .shake-shake .rockup {
+  -webkit-animation: rockup 800ms;
+  animation: rockup 800ms;
+}
+.page-game .shake-shake .rockdown {
+  -webkit-animation: rockdown 800ms;
+  animation: rockdown 800ms;
+}
+@-webkit-keyframes rockup {
+  0% {
+    -webkit-transform: translateY(0%);
+  }
+  50% {
+    -webkit-transform: translateY(-50%);
+  }
+  100% {
+    -webkit-transform: translateY(0%);
+  }
+}
+@keyframes rockup {
+  0% {
+    transform: translateY(0%);
+  }
+  50% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+@-webkit-keyframes rockdown {
+  0% {
+    -webkit-transform: translateY(0%);
+  }
+  50% {
+    -webkit-transform: translateY(50%);
+  }
+  100% {
+    -webkit-transform: translateY(0%);
+  }
+}
+@keyframes rockdown {
+  0% {
+    transform: translateY(0%);
+  }
+  50% {
+    transform: translateY(50%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+.page-game .shake-shake .prompt-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 60%;
+  font-size: 0.4rem;
+  text-decoration: underline;
+}
+.page-game .shake-shake .tip {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 65%;
+  font-size: 0.4rem;
+  text-decoration: none !important;
+}
+.page-game .shake-shake .prize-list {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 72%;
+  width: 100%;
+  height: 3.333333rem;
+  font-size: 0.4rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.page-game .shake-shake .prize-list .prize-item {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.1rem;
+  margin: 0.1rem;
+  border-radius: 5px;
+}
+.page-game .shake-shake .prize-list .prize-item img {
+  max-width: 2.5rem;
+}
+.page-game .shake-shake .prize-list .prize-item div {
+  text-align: center;
+}
+.page-rank .sprites {
+  background-image: url("http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/sprites.png");
+  background-repeat: no-repeat;
+  background-size: 13.066667rem 13.226667rem;
+}
+.page-rank .container {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  padding: 0.8rem 0.2rem 0;
+  font-size: 0.386667rem;
+  text-align: center;
+  background: #ff6064;
+  background: -ms-linear-gradient(top, #ff4761, #ffd189);
+  /* IE 10 */
+  background: -moz-linear-gradient(top, #ff4761, #ffd189);
+  /*火狐*/
+  /*谷歌*/
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff4761), to(#ffd189));
+  /* Safari 4-5, Chrome 1-9*/
+  background: -webkit-linear-gradient(top, #ff4761, #ffd189);
+  /*Safari5.1 Chrome 10+*/
+  background: -o-linear-gradient(top, #ff4761, #ffd189);
+  /*Opera 11.10+*/
+}
+.page-rank .container .sprite-rank-title {
+  width: 5.146667rem;
+  height: 1.52rem;
+  background-position: 0 -11.706667rem;
+  margin: 0 auto 0;
+}
+.page-rank .container .sprite-rank-one {
+  width: 0.826667rem;
+  height: 0.613333rem;
+  background-position: -3.866667rem -7.64rem;
+}
+.page-rank .container .sprite-rank-two {
+  width: 0.826667rem;
+  height: 0.613333rem;
+  background-position: -4.693333rem -7.64rem;
+}
+.page-rank .container .sprite-rank-three {
+  width: 0.826667rem;
+  height: 0.613333rem;
+  background-position: -5.533333rem -7.64rem;
+}
+.page-rank .container div {
+  margin: 0 auto;
+}
+.page-rank .container table {
+  width: 100%;
+}
+.page-rank .container table thead {
+  background-color: #f1c80a;
+}
+.page-rank .container table thead td {
+  color: #fff;
+  text-align: center;
+  border: none;
+  padding: 0.1rem 0;
+}
+.page-rank .container table tbody tr {
+  border-bottom: 1px solid #fff;
+}
+.page-rank .container table tbody td {
+  padding: 0.1rem 0;
+  color: #fff;
+  text-align: center;
+  max-width: 3.12rem;
+}
+.page-share .black .content-wrapper {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
+.page-share .screenshot {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+}
+.page-share .out-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  z-index: 10;
+  transition: all 0.8s ease;
+}
+.page-share .out-box img {
+  border: 2px solid #fff;
+  border-radius: 6px;
+  width: 100%;
+}
+.page-share .container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: 2;
+  font-size: 0.386667rem;
+}
+.page-share .container img {
+  display: block;
+  margin: 0 auto;
+}
+.page-share .container div {
+  text-align: center;
+}
+.page-share .container p {
+  margin-top: 0.1rem;
+  text-align: center;
+  color: black;
+}
+.page-share .container .lilanz-letao-logo {
+  width: 6.68rem;
+  position: absolute;
+  top: 0.773333rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.page-share .container .content-wrapper {
+  position: relative;
+  overflow: hidden;
+  z-index: -1;
+  box-sizing: border-box;
+  margin: 2.38666rem auto 0.773333rem;
+  width: 9.066667rem;
+  height: 13.866667rem;
+  border-radius: 0.133333rem;
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.page-share .container .content-wrapper .qr-wrapper {
+  width: 6.706667rem;
+  height: 7.346667rem;
+  position: relative;
+  background-color: #fff;
+  margin: 4.026667rem auto 0.693333rem;
+  border-radius: 0.133333rem;
+}
+.page-share .container .content-wrapper .qr-wrapper .ribbon-wrapper {
+  position: absolute;
+  top: -0.613333rem;
+  left: 0.306667rem;
+}
+.page-share .container .content-wrapper .qr-wrapper .ribbon-wrapper .ribbon-img {
+  width: 6.106667rem;
+  height: 1.44rem;
+}
+.page-share .container .content-wrapper .qr-wrapper .ribbon-wrapper .game-show .avatar-wrapper {
+  width: 0.64rem;
+  height: 0.64rem;
+  padding: 0.1rem;
+  border: 0.026667rem solid #fff;
+  border-radius: 50%;
+  position: absolute;
+  left: 1.16rem;
+  top: 0.15rem;
+  overflow: hidden;
+}
+.page-share .container .content-wrapper .qr-wrapper .ribbon-wrapper .game-show .avatar-wrapper img {
+  width: 100%;
+  border-radius: 50%;
+}
+.page-share .container .content-wrapper .qr-wrapper .ribbon-wrapper .game-show p {
+  position: absolute;
+  left: 2.16rem;
+  top: 0.233333rem;
+  height: 0.453333rem;
+  line-height: 0.453333rem;
+  font-size: 0.426667rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 5px 2px 6px #ef8441;
+}
+.page-share .container .content-wrapper .qr-wrapper .ribbon-wrapper .game-show p span {
+  position: relative;
+  top: 0.05rem;
+  font-size: 0.586667rem;
+}
+.page-share .container .content-wrapper .qr-wrapper .qrcode {
+  display: inline-block;
+  width: 3.946667rem;
+  margin: 1.213333rem auto 0.533333rem;
+}
+.page-share .container .content-wrapper .qr-wrapper p {
+  font-size: 0.453333rem;
+}
+.page-share .container .content-wrapper .tips-wrapper {
+  width: 6.706667rem;
+  height: 0.933333rem;
+  font-size: 0.32rem;
+  background-color: rgba(0, 0, 0, 0.4);
+  margin: 0 auto;
+  line-height: 0.933333rem;
+  border-radius: 0.08rem;
+}
+.page-home {
+  z-index: 1;
+}
+.page-home a {
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+}
+.page-home .container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 0.386667rem;
+  background: transparent url("http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/home-bg.jpg") no-repeat center center;
+  background-size: cover;
+}
+.page-home .container img {
+  display: block;
+  margin: 0 auto;
+}
+.page-home .container div {
+  text-align: center;
+}
+.page-home .container .lilanz-letao-logo {
+  width: 6.68rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.24rem;
+}
+.page-home .container .btn-wrapper {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0.8rem;
+}
+.page-home .container .btn-wrapper .btn-float .left,
+.page-home .container .btn-wrapper .btn-float .right {
+  float: left;
+  width: 50%;
+}
+.page-home .container .btn-wrapper .btn-float .left div,
+.page-home .container .btn-wrapper .btn-float .right div {
+  margin: 0.2rem auto 0;
+}
+.page-home .container .btn-wrapper .sprite-start-game {
+  width: 3.88rem;
+  height: 1.176667rem;
+  background-position: 0rem -7.643333rem;
+  margin: 0 auto;
+}
+.page-home .container .btn-wrapper .remain-time {
+  margin: 0 auto 0.2rem;
+  position: relative;
+}
+.page-home .container .btn-wrapper .remain-time div {
+  display: inline-block;
+}
+.page-home .container .btn-wrapper .remain-time .sprite-remain-time-left {
+  width: 1.36rem;
+  height: 0.506666rem;
+  background-position: -6.53333rem -7.64rem;
+}
+.page-home .container .btn-wrapper .remain-time .sprite-remain-time-right {
+  width: 1.733333rem;
+  height: 0.506666rem;
+  background-position: -8.29333rem -7.64rem;
+}
+.page-home .container .btn-wrapper .remain-time span {
+  color: black;
+  -webkit-text-fill-color: black;
+  text-fill-color: black;
+  -webkit-text-stroke: 2px white;
+  text-stroke: 2px white;
+  background: transparent;
+  font-weight: bold;
+  font-size: 0.7rem;
+}
+.page-home .container .btn-wrapper .sprite-rule {
+  width: 2.72rem;
+  height: 0.86667rem;
+  background-position: 0rem -6.747rem;
+}
+.page-home .container .btn-wrapper .sprite-rank {
+  width: 2.72rem;
+  height: 0.856667rem;
+  background-position: -2.72rem -6.75rem;
+}
+.page-home .container .btn-wrapper .sprite-prize {
+  width: 2.72rem;
+  height: 0.856667rem;
+  background-position: -5.426667rem -6.75rem;
+}
+.page-home .container .btn-wrapper .sprite-list {
+  width: 2.72rem;
+  height: 0.856667rem;
+  background-position: -8.16rem -6.75rem;
+}
+.page-rule a,
+.page-prize-list a,
+.page-my-prize a {
+  display: inline-block;
+  text-decoration: none;
+  color: #ff4761;
+}
+.page-rule ol li,
+.page-prize-list ol li,
+.page-my-prize ol li {
+  text-align: left;
+  margin: 0.4rem;
+}
+.page-rule .container,
+.page-prize-list .container,
+.page-my-prize .container {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  color: #000000;
+  font-size: 0.386667rem;
+  background: #ff6064;
+  background: -ms-linear-gradient(top, #ff4761, #ffd189);
+  /* IE 10 */
+  background: -moz-linear-gradient(top, #ff4761, #ffd189);
+  /*火狐*/
+  /*谷歌*/
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff4761), to(#ffd189));
+  /* Safari 4-5, Chrome 1-9*/
+  background: -webkit-linear-gradient(top, #ff4761, #ffd189);
+  /*Safari5.1 Chrome 10+*/
+  background: -o-linear-gradient(top, #ff4761, #ffd189);
+  /*Opera 11.10+*/
+}
+.page-rule .container .one-board,
+.page-prize-list .container .one-board,
+.page-my-prize .container .one-board {
+  position: relative;
+  box-sizing: border-box;
+  width: 8.56rem;
+  min-height: 3.2rem;
+  margin: 1.4rem auto 0;
+  padding: 1rem 0.2rem;
+  background-color: #f8e7af;
+  border: 4px solid #d6a76f;
+  border-radius: 6px;
+  text-align: center;
+}
+.page-rule .container .one-board .sprite-rule,
+.page-prize-list .container .one-board .sprite-rule,
+.page-my-prize .container .one-board .sprite-rule {
+  width: 5.653333rem;
+  height: 1.426667rem;
+  background-position: -5.68rem -8.84rem;
+}
+.page-rule .container .one-board .sprite-prize,
+.page-prize-list .container .one-board .sprite-prize,
+.page-my-prize .container .one-board .sprite-prize {
+  width: 5.653333rem;
+  height: 1.426667rem;
+  background-position: 0 -10.253333rem;
+}
+.page-rule .container .one-board .sprite-winner-list,
+.page-prize-list .container .one-board .sprite-winner-list,
+.page-my-prize .container .one-board .sprite-winner-list {
+  width: 5.653333rem;
+  height: 1.426667rem;
+  background-position: 0rem -8.84rem;
+}
+.page-rule .container .one-board .sprite-my-prize,
+.page-prize-list .container .one-board .sprite-my-prize,
+.page-my-prize .container .one-board .sprite-my-prize {
+  width: 5.653333rem;
+  height: 1.426667rem;
+  background-position: -5.64rem -10.253333rem;
+}
+.page-rule .container .one-board div:first-child,
+.page-prize-list .container .one-board div:first-child,
+.page-my-prize .container .one-board div:first-child {
+  position: absolute;
+  top: -0.7rem;
+  left: 1.4rem;
+}
+.page-rule .container .one-board p,
+.page-prize-list .container .one-board p,
+.page-my-prize .container .one-board p {
+  text-align: center;
+}
+.page-rule .container .one-board h1,
+.page-prize-list .container .one-board h1,
+.page-my-prize .container .one-board h1 {
+  font-size: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+.page-rule .container .one-board h2,
+.page-prize-list .container .one-board h2,
+.page-my-prize .container .one-board h2 {
+  font-size: 0.6rem;
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+.page-rule .container .one-board button,
+.page-prize-list .container .one-board button,
+.page-my-prize .container .one-board button {
+  width: 100px;
+  height: 34px;
+  color: #fff;
+  letter-spacing: 1px;
+  background: #1c7f11;
+  outline: none;
+  border: none;
+  margin-top: 0.4rem;
+  border-radius: 4px;
+}
+.page-rule .container .one-board table tr,
+.page-prize-list .container .one-board table tr,
+.page-my-prize .container .one-board table tr {
+  width: 100%;
+}
+.page-rule .container .one-board table tr td,
+.page-prize-list .container .one-board table tr td,
+.page-my-prize .container .one-board table tr td {
+  width: 33%;
+  padding: 0.2rem;
+  text-align: center;
+  border-radius: 12px;
+  overflow: hidden;
+  color: black;
+}
+.page-rule .container .one-board table tr td img,
+.page-prize-list .container .one-board table tr td img,
+.page-my-prize .container .one-board table tr td img {
+  width: 100%;
+}
+.page-rule .container .one-board table tr td input,
+.page-prize-list .container .one-board table tr td input,
+.page-my-prize .container .one-board table tr td input {
+  width: 5.266667rem;
+  border: none;
+  border-radius: 4px;
+}
+.page-rule .container .one-board .table-line,
+.page-prize-list .container .one-board .table-line,
+.page-my-prize .container .one-board .table-line {
+  width: 100%;
+}
+.page-rule .container .one-board .table-line td,
+.page-prize-list .container .one-board .table-line td,
+.page-my-prize .container .one-board .table-line td {
+  border-bottom: 1px solid #070705;
+}
+.page-rule .container .one-board:last-child,
+.page-prize-list .container .one-board:last-child,
+.page-my-prize .container .one-board:last-child {
+  margin-bottom: 1.4rem;
+}
+.page-rule .container .sprite-rank-title,
+.page-prize-list .container .sprite-rank-title,
+.page-my-prize .container .sprite-rank-title {
+  width: 5.146667rem;
+  height: 1.52rem;
+  background-position: 0 -11.706667rem;
+  margin: 0 auto 0;
+}
+.page-rule .container .sprite-rank-one,
+.page-prize-list .container .sprite-rank-one,
+.page-my-prize .container .sprite-rank-one {
+  width: 0.826667rem;
+  height: 0.613333rem;
+  background-position: -3.866667rem -7.64rem;
+}
+.page-rule .container .sprite-rank-two,
+.page-prize-list .container .sprite-rank-two,
+.page-my-prize .container .sprite-rank-two {
+  width: 0.826667rem;
+  height: 0.613333rem;
+  background-position: -4.693333rem -7.64rem;
+}
+.page-rule .container .sprite-rank-three,
+.page-prize-list .container .sprite-rank-three,
+.page-my-prize .container .sprite-rank-three {
+  width: 0.826667rem;
+  height: 0.613333rem;
+  background-position: -5.533333rem -7.64rem;
+}
+.page-select .container {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  font-size: 0.386667rem;
+  background: #f44c74;
+  /*向右*/
+}
+.page-select .container .score-wrapper {
+  color: #fff;
+  font-size: 0.6rem;
+  text-align: center;
+  margin: 1.333333rem 0 0.333333rem 0;
+}
+.page-select .container .score-wrapper span {
+  color: #fff;
+  font-size: 0.6rem;
+}
+.page-select .container .level-wrapper {
+  width: 7.546667rem;
+  margin: 0 auto;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  position: relative;
+}
+.page-select .container .level-wrapper .sprites {
+  float: left;
+  margin: 7.8%;
+  flex-basis: 33%;
+  position: relative;
+}
+.page-select .container .level-wrapper .sprites .level {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -60%);
+  color: #5b421f;
+  font-size: 1.2em;
+}
+.page-select .container .level-wrapper .sprites.selected:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 4px;
+  width: 104%;
+  height: 104%;
+  border: 2px solid #0086b3;
+}
+.page-select .container .level-wrapper .sprite-unlock {
+  width: 1.32rem;
+  height: 1.32rem;
+  background-position: -9.466667rem -2.84rem;
+}
+.page-select .container .level-wrapper .sprite-locked {
+  width: 1.32rem;
+  height: 1.32rem;
+  background-position: -8.133333rem -2.84rem;
+}
+.page-select .container .triangle_border_right {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #fff;
+  margin: 0.4rem auto 0.2rem;
+  position: relative;
+}
+.page-select .container .triangle_border_right span {
+  display: inline-block;
+  position: absolute;
+  left: 75%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  font-size: 0;
+  line-height: 0;
+  border-color: transparent transparent transparent #FF9600;
+  border-style: solid dashed dashed dashed;
+  border-width: 20px;
+}
+.page-select .container .start-bottom {
+  margin-bottom: 2.3rem;
+}
+.page-select .container p {
+  text-align: center;
+  color: #fff;
+}
+/*# sourceMappingURL=style.css.map */

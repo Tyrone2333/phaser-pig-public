@@ -1,0 +1,1182 @@
+
+body {
+  margin: 0;
+  //overflow: hidden;
+  overflow-x: hidden;
+  //background-color: black;
+  color: #fff;
+  font-size: 18px;
+  font-family: Helvetica, Arial, STHeiTi, 'Hiragino Sans GB', 'Microsoft Yahei',
+  '微软雅黑', STHeiti, '华文细黑', sans-serif;
+}
+
+canvas {
+  height: 100%;
+  //transform: rotateZ(30deg);
+  //transition: all .5s ease;
+}
+
+.clearfix::after {
+  display: table;
+  clear: both;
+  content: "";
+  visibility: hidden;
+}
+
+// 放按钮徽标之类的精灵图
+.sprites {
+  background-image: url("http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/sprites.png");
+  background-repeat: no-repeat;
+  background-size: 13.066667rem 13.226667rem;
+}
+
+#phaser-app {
+  margin: 0 auto;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+.warn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: green;
+  padding: 2px;
+}
+
+.guide {
+  position: absolute;
+  visibility: hidden;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background: url("http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/guide.jpg") no-repeat center center;
+  background-size: cover;
+}
+
+.bg-world {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  //min-height: 100%;
+  z-index: 0;
+  // 为了不给 url-loader 打包
+  //background-image: url("../../resource/image/level1-bg.jpg");
+  background-position-x: center;
+  background-position-y: center;
+  background-size: cover;
+}
+
+.hide {
+  display: none;
+}
+
+.page {
+  z-index: 10;
+}
+
+.btn-close {
+  position: fixed;
+  width: 0.3rem;
+  height: 0.3rem;
+  line-height: 0.3rem;
+  font-size: .48rem;
+  text-align: center;
+  padding: 10px;
+  color: #fff;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, .4);
+  bottom: 0.933rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  i {
+    font-size: 30px;
+  }
+}
+
+// 预加载
+.page-preload {
+  .progress {
+    width: 56px;
+    height: 56px;
+    max-width: 56px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+  }
+  img {
+    width: 100%;
+  }
+  .progresstext {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    color: black;
+    font-size: 16px;
+  }
+}
+
+// 下面都是各个隐藏的页面
+
+// 游戏页面
+.page-game {
+  z-index: 1;
+  //一个用于居中的容器
+  .container {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    min-width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+    //background-color: transparent;
+    background-color: rgba(0, 0, 0, 0.8);
+
+    //align-items: center;
+    //justify-content: center;
+    transition: all .3s ease;
+    /*filter: blur(1.33rem);*/
+    .countdown {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+    }
+    .gameover {
+      font-size: 40px;
+      text-align: center;
+      .regame {
+        margin: 20px;
+      }
+    }
+
+  }
+  .score-panel {
+    position: absolute;
+    font-size: 20px;
+    top: 20px;
+    left: 20px;
+    .score {
+      font-size: 1.2em;
+    }
+  }
+
+  .btn-music {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    .icon {
+      font-size: 24px;
+    }
+  }
+  .btn-snow {
+    position: absolute;
+    top: 64px;
+    right: 20px;
+    .icon {
+      font-size: 24px;
+    }
+  }
+
+  //游戏关卡结束相关
+  //游戏结果 和 抽奖结果
+  .game-result,
+  .draw-result {
+    .btn-long {
+      box-sizing: border-box;
+      // width: 5.12rem;
+      height: 1.066667rem;
+      border-radius: 6px;
+      padding: .266667rem .506667rem;
+      text-align: center;
+      font-size: .426667rem;
+      margin-bottom: .346667rem;
+    }
+    .btn-short {
+      display: inline-block;
+      box-sizing: border-box;
+      width: 2.333333rem;
+      height: 1.066667rem;
+      line-height: 1.066667rem;
+      border-radius: 6px;
+      // padding: .266667rem .506667rem;
+      text-align: center;
+      font-size: .426667rem;
+    }
+    .btn-green {
+      background-color: #00ab57;
+    }
+    .btn-red {
+      background-color: #f13959;
+    }
+
+    // 挑战成功图片容器
+    .img-wrapper {
+      // 游戏结束 结果
+      &.game-padding {
+        padding: 1.613333rem 16%;
+        .sprites.sprite-failure {
+          width: 6.533333rem;
+          height: 2.8rem;
+          background-position: -6.533333rem 0;
+        }
+        .sprites.sprite-success {
+          width: 6.53333rem;
+          height: 2.826667rem;
+          background-position: 0 0;
+        }
+      }
+      // 抽奖结束 结果
+      &.draw-padding {
+        padding: 1.613333rem 30%;
+        .sprites.sprite-no-gift {
+          width: 3.933333rem;
+          height: 3.906667rem;
+          background-position: -3.933333rem -2.85rem;
+        }
+        .sprites.sprite-has-gift {
+          width: 3.933333rem;
+          height: 3.906667rem;
+          background-position: 0 -2.84rem;
+        }
+        .gift-img {
+          width: 3.933333rem;
+        }
+      }
+
+      position: relative;
+      padding: 1.613333rem 17%;
+      .encircling-light {
+        position: absolute;
+        left: -15%;
+        top: -50%;
+        transform-origin: 50% 50%;
+        width: 125%;
+        //max-width: 100%;
+        //max-height: 100%;
+        z-index: -1;
+        //height: 100%;
+        &.gift-top {
+          top: -38%; // 奖品用的 encircling-light 和 挑战成功用的是同一个
+        }
+        &.challenge-top {
+          top: -50%;
+        }
+
+      }
+      @keyframes rotate {
+        0% {
+          transform: rotate(0);
+        }
+        50% {
+          transform: rotate(180deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .rotate {
+        transition: 0.5s;
+        // transform-origin: 30px 30px;
+        animation: rotate 10s linear infinite; /*开始动画后无限循环，用来控制rotate*/
+      }
+    }
+    // 成绩文本容器
+    .text-wrapper {
+      text-align: center;
+      font-size: .426667rem;
+      p:last-child {
+        margin: 1.066667rem 0 1.333333rem 0;
+      }
+    }
+    // 去抽奖,排行榜,好友助力 三个按钮容器
+    .btn-wrapper {
+      padding: 0 2.4rem;
+      .btn-float {
+        div:first-child {
+          float: left;
+        }
+        div:last-child {
+          float: right;
+        }
+        div {
+          display: inline-block;
+          text-decoration: none;
+          color: #fff;
+        }
+      }
+
+    }
+  }
+
+  .shake-shake {
+    .rock {
+      width: 4.546666rem;
+      height: 4.56rem;
+      position: absolute;
+      left: 50%;
+      top: 30%;
+      transform: translate(-50%, 0%);
+      & > img {
+        position: absolute;
+        width: 4.546666rem;
+        left: 0;
+      }
+      .rock-top {
+        bottom: 2.22rem;
+      }
+      .rock-bottom {
+        bottom: 0;
+      }
+    }
+    .rockup {
+      -webkit-animation: rockup 800ms;
+      animation: rockup 800ms;
+    }
+
+    .rockdown {
+      -webkit-animation: rockdown 800ms;
+      animation: rockdown 800ms;
+    }
+
+    @-webkit-keyframes rockup {
+      0% {
+        -webkit-transform: translateY(0%);
+      }
+
+      50% {
+        -webkit-transform: translateY(-50%);
+      }
+
+      100% {
+        -webkit-transform: translateY(0%);
+      }
+    }
+
+    @keyframes rockup {
+      0% {
+        transform: translateY(0%);
+      }
+
+      50% {
+        transform: translateY(-50%);
+      }
+
+      100% {
+        transform: translateY(0%);
+      }
+    }
+
+    @-webkit-keyframes rockdown {
+      0% {
+        -webkit-transform: translateY(0%);
+      }
+
+      50% {
+        -webkit-transform: translateY(50%);
+      }
+
+      100% {
+        -webkit-transform: translateY(0%);
+      }
+    }
+
+    @keyframes rockdown {
+      0% {
+        transform: translateY(0%);
+      }
+
+      50% {
+        transform: translateY(50%);
+      }
+
+      100% {
+        transform: translateY(0%);
+      }
+    }
+
+    .prompt-text {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 60%;
+      font-size: 0.4rem;
+      text-decoration: underline;
+    }
+    .tip {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 65%;
+      font-size: 0.4rem;
+      text-decoration: none !important;
+    }
+    .prize-list {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 72%;
+      width: 100%;
+      height: 3.333333rem;
+      font-size: 0.4rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      .prize-item {
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 0.1rem;
+        margin: .1rem;
+        border-radius: 5px;
+        img {
+          max-width: 2.5rem;
+        }
+        div {
+          text-align: center;
+        }
+      }
+    }
+
+  }
+}
+
+//排行榜页面
+.page-rank {
+  // 放按钮徽标之类的精灵图
+  .sprites {
+    background-image: url("http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/sprites.png");
+    background-repeat: no-repeat;
+    background-size: 13.066667rem 13.226667rem;
+  }
+  .container {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100%;
+    padding: .8rem .2rem 0;
+    font-size: .386667rem;
+    text-align: center;
+    // 背景渐变
+    background: #ff6064;
+    //FILTER: progid: DXImageTransform . Microsoft . Gradient(gradientType = 0, startColorStr = #ff4761, endColorStr = #ffd189); /*IE 6 7 8*/
+    background: -ms-linear-gradient(top, #ff4761, #ffd189); /* IE 10 */
+    background: -moz-linear-gradient(top, #ff4761, #ffd189); /*火狐*/
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff4761), to(#ffd189)); /*谷歌*/
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff4761), to(#ffd189)); /* Safari 4-5, Chrome 1-9*/
+    background: -webkit-linear-gradient(top, #ff4761, #ffd189); /*Safari5.1 Chrome 10+*/
+    background: -o-linear-gradient(top, #ff4761, #ffd189); /*Opera 11.10+*/
+
+    // 分数排行榜
+    .sprite-rank-title {
+      width: 5.146667rem;
+      height: 1.52rem;
+      background-position: 0 -11.706667rem;
+      margin: 0 auto 0;
+    }
+    .sprite-rank-one {
+      width: .826667rem;
+      height: .613333rem;
+      background-position: -3.866667rem -7.64rem;
+    }
+    .sprite-rank-two {
+      width: .826667rem;
+      height: .613333rem;
+      background-position: -4.693333rem -7.64rem;
+    }
+    .sprite-rank-three {
+      width: .826667rem;
+      height: .613333rem;
+      background-position: -5.533333rem -7.64rem;
+    }
+
+    div {
+      margin: 0 auto;
+    }
+    table {
+      width: 100%;
+      thead {
+        background-color: #f1c80a;
+        td {
+          color: #fff;
+          text-align: center;
+          border: none;
+          padding: .1rem 0;
+        }
+      }
+      tbody {
+        tr {
+          border-bottom: 1px solid #fff;
+        }
+        td {
+          // padding: 2px;
+          padding: .1rem 0;
+          color: #fff;
+          text-align: center;
+          max-width: 3.12rem;
+        }
+      }
+    }
+
+  }
+}
+
+// 好友助力页面
+.page-share {
+  .black {
+    // p {
+    //   color: white !important;
+    // }
+    .content-wrapper {
+      background-color: rgba(0, 0, 0, .4) !important;
+    }
+
+  }
+  // html生成图片
+  .screenshot {
+    background-color: rgba(0, 0, 0, .5);
+    padding: 20px;
+  }
+  .out-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    z-index: 10;
+    transition: all .8s ease;
+    img {
+      border: 2px solid #fff;
+      border-radius: 6px;
+      width: 100%;
+    }
+  }
+  // html生成图片 END
+  .container
+    //, #img-share
+  {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: 2;
+    //background-color: #ccb9bc;
+    //background-color: transparent;
+
+    //display: flex;
+    //align-items: center;
+    //// justify-content: center;
+    //flex-direction: column;
+
+    font-size: .386667rem;
+    //background: url("../../resource/image/level1-bg.jpg") no-repeat center center;
+    //background-size: cover;
+
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+    div {
+      text-align: center;
+    }
+    p {
+      margin-top: .1rem;
+      text-align: center;
+      color: black;
+    }
+
+    .lilanz-letao-logo {
+      width: 6.68rem;
+      position: absolute;
+      top: .773333rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .content-wrapper {
+      position: relative;
+      overflow: hidden;
+      z-index: -1;
+      box-sizing: border-box;
+      //margin-top: .493333rem;
+      //margin-bottom: .24rem;
+      margin: 2.38666rem auto .773333rem;
+      width: 9.066667rem;
+      height: 13.866667rem;
+      border-radius: .133333rem;
+      background-color: rgba(255, 255, 255, .4);
+      .qr-wrapper {
+        width: 6.706667rem;
+        height: 7.346667rem;
+        position: relative;
+        background-color: #fff;
+        margin: 4.026667rem auto .693333rem;
+        border-radius: .133333rem;
+        .ribbon-wrapper {
+          position: absolute;
+          top: -0.613333rem;
+          left: .306667rem;
+          .ribbon-img {
+            width: 6.106667rem;
+            height: 1.44rem;
+          }
+          .game-show {
+
+            .avatar-wrapper {
+              width: .64rem;
+              height: .64rem;
+
+              padding: .1rem;
+              border: .026667rem solid #fff;
+              border-radius: 50%;
+
+              position: absolute;
+              left: 1.16rem;
+              top: .15rem;
+              overflow: hidden;
+              img {
+                width: 100%;
+                border-radius: 50%;
+              }
+            }
+            .avatar {
+
+            }
+            p {
+              position: absolute;
+              left: 2.16rem;
+              top: .233333rem;
+
+              height: .453333rem;
+              line-height: .453333rem;
+
+              font-size: .426667rem;
+              font-weight: bold;
+              color: #fff;
+              text-shadow: 5px 2px 6px #ef8441;
+              span {
+                position: relative;
+                top: 0.05rem;
+                font-size: .586667rem;
+              }
+            }
+          }
+        }
+        .qrcode {
+          display: inline-block;
+          width: 3.946667rem;
+          margin: 1.213333rem auto .533333rem;
+          // margin-top: 1.706667rem;
+          // margin-bottom: .32rem;
+        }
+        p {
+          font-size: .453333rem;
+        }
+      }
+      .tips-wrapper {
+        width: 6.706667rem;
+        height: .933333rem;
+        font-size: .32rem;
+        background-color: rgba(0, 0, 0, .4);
+        margin: 0 auto;
+        line-height: .933333rem;
+        border-radius: .08rem;
+      }
+    }
+  }
+}
+
+// 主页
+.page-home {
+  z-index: 1;
+  a {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+  }
+
+  .container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: .386667rem;
+    background: transparent url("http://lilanz.oss-cn-fujian-a.aliyuncs.com/2018games/image/home-bg.jpg") no-repeat center center;
+    //background: transparent url("../../resource/image/home-bg.jpg") no-repeat center center;
+    background-size: cover;
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+    div {
+      text-align: center;
+    }
+
+    .lilanz-letao-logo {
+      width: 6.68rem;
+      //height: 2.946667rem;
+      margin-top: .3rem;
+      margin-bottom: .24rem;
+    }
+
+    .btn-wrapper {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      bottom: .8rem;
+      .btn-float {
+        .left, .right {
+          float: left;
+          width: 50%;
+          div {
+            margin: .2rem auto 0;
+          }
+        }
+
+      }
+      .sprite-start-game {
+        width: 3.88rem;
+        height: 1.176667rem;
+        background-position: 0rem -7.643333rem;
+        margin: 0 auto;
+      }
+      .remain-time {
+
+        margin: 0 auto .2rem;
+        position: relative;
+        div {
+          display: inline-block;
+        }
+        .sprite-remain-time-left {
+          width: 1.36rem;
+          height: 0.506666rem;
+          background-position: -6.53333rem -7.64rem;
+        }
+        .sprite-remain-time-right {
+          width: 1.733333rem;
+          height: 0.506666rem;
+          background-position: -8.29333rem -7.64rem;
+        }
+        span {
+          //position: absolute;
+          //left: 1.4rem;
+
+          color: black;
+          -webkit-text-fill-color: black;
+          text-fill-color: black;
+          -webkit-text-stroke: 2px white;
+          text-stroke: 2px white;
+          background: transparent;
+          font-weight: bold;
+          font-size: 0.7rem;
+        }
+      }
+      .sprite-rule {
+        width: 2.72rem;
+        height: .86667rem;
+        background-position: 0rem -6.747rem;
+      }
+      .sprite-rank {
+        width: 2.72rem;
+        height: .856667rem;
+        background-position: -2.72rem -6.75rem;
+      }
+      .sprite-prize {
+        width: 2.72rem;
+        height: .856667rem;
+        background-position: -5.426667rem -6.75rem;
+      }
+      .sprite-list {
+        width: 2.72rem;
+        height: .856667rem;
+        background-position: -8.16rem -6.75rem;
+      }
+    }
+
+  }
+
+}
+
+// 规则页面
+.page-rule,
+.page-prize-list,
+.page-my-prize {
+  a {
+    display: inline-block;
+    text-decoration: none;
+    color: #ff4761;
+  }
+  ol {
+    li {
+      text-align: left;
+      margin: .4rem;
+    }
+  }
+  .container {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    color: #000000;
+    // height: 100%;
+    //background-color: #ccb9bc;
+    // background-color: transparent;
+
+    font-size: .386667rem;
+
+    // 背景渐变
+    background: #ff6064;
+    //FILTER: progid: DXImageTransform . Microsoft . Gradient(gradientType = 0, startColorStr = #ff4761, endColorStr = #ffd189); /*IE 6 7 8*/
+    background: -ms-linear-gradient(top, #ff4761, #ffd189); /* IE 10 */
+    background: -moz-linear-gradient(top, #ff4761, #ffd189); /*火狐*/
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff4761), to(#ffd189)); /*谷歌*/
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ff4761), to(#ffd189)); /* Safari 4-5, Chrome 1-9*/
+    background: -webkit-linear-gradient(top, #ff4761, #ffd189); /*Safari5.1 Chrome 10+*/
+    background: -o-linear-gradient(top, #ff4761, #ffd189); /*Opera 11.10+*/
+
+    .one-board {
+      position: relative;
+      box-sizing: border-box;
+      width: 8.56rem;
+      min-height: 3.2rem;
+      margin: 1.4rem auto 0;
+      padding: 1rem 0.2rem;
+      // padding-top: 1rem;
+      // padding-bottom: 1rem;
+      background-color: #f8e7af;
+      border: 4px solid #d6a76f;
+      border-radius: 6px;
+      text-align: center;
+
+      // 四个头部的标题 精灵图
+      .sprite-rule {
+        width: 5.653333rem;
+        height: 1.426667rem;
+        background-position: -5.68rem -8.84rem;
+      }
+      .sprite-prize {
+        width: 5.653333rem;
+        height: 1.426667rem;
+        background-position: 0 -10.253333rem;
+      }
+      .sprite-winner-list {
+        width: 5.653333rem;
+        height: 1.426667rem;
+        background-position: 0rem -8.84rem;
+
+      }
+      .sprite-my-prize {
+        width: 5.653333rem;
+        height: 1.426667rem;
+        background-position: -5.64rem -10.253333rem;
+      }
+      // 四个头部的标题 精灵图 END
+
+      // 头部的标题
+      & div:first-child {
+        position: absolute;
+        top: -0.7rem;
+        left: 1.4rem;
+      }
+      p {
+        text-align: center;
+      }
+      h1 {
+        font-size: .8rem;
+        margin-bottom: .8rem;
+      }
+      h2 {
+        font-size: .6rem;
+        font-weight: bold;
+        margin-bottom: .2rem;
+      }
+      button {
+        width: 100px;
+        height: 34px;
+        color: #fff;
+        letter-spacing: 1px;
+        background: #1c7f11;
+        outline: none;
+        border: none;
+        margin-top: .4rem;
+        border-radius: 4px;
+      }
+      table {
+        tr {
+          width: 100%;
+          td {
+            width: 33%;
+            padding: .2rem;
+            text-align: center;
+            border-radius: 12px;
+            overflow: hidden;
+            color: black;
+            img {
+              width: 100%;
+            }
+            input {
+              width: 5.266667rem;
+              border: none;
+              border-radius: 4px;
+            }
+
+          }
+        }
+      }
+      .table-line {
+        width: 100%;
+        td {
+          border-bottom: 1px solid #070705;
+        }
+      }
+
+      &:last-child {
+        margin-bottom: 1.4rem;
+      }
+    }
+
+    // 分数排行榜
+    .sprite-rank-title {
+      width: 5.146667rem;
+      height: 1.52rem;
+      background-position: 0 -11.706667rem;
+      margin: 0 auto 0;
+    }
+    .sprite-rank-one {
+      width: .826667rem;
+      height: .613333rem;
+      background-position: -3.866667rem -7.64rem;
+    }
+    .sprite-rank-two {
+      width: .826667rem;
+      height: .613333rem;
+      background-position: -4.693333rem -7.64rem;
+    }
+    .sprite-rank-three {
+      width: .826667rem;
+      height: .613333rem;
+      background-position: -5.533333rem -7.64rem;
+    }
+  }
+}
+
+// 领奖信息页面 (领票登记页) 废弃
+// .page-prize {
+//   .container {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     box-sizing: border-box;
+//     width: 100%;
+//     min-height: 100%;
+//     padding: .8rem .2rem 0;
+//     font-size: .386667rem;
+//     background: #f44c74;
+//     // text-align: center;
+//     h1 {
+//       font-size: 50px;
+//       text-align: center;
+//       color: #f7ce46;
+//     }
+//     h2 {
+//       font-size: 40px;
+//       text-align: center;
+//       color: #f7ce46;
+//     }
+//     h3 {
+//       font-size: 30px;
+//       text-align: center;
+//       color: #fff;
+//       margin: .533333rem 0;
+//     }
+
+//     .panel {
+//       width: 100%;
+//       border-radius: 6px;
+//       overflow: hidden;
+//       margin: 0;
+//       padding: 0;
+//       .item {
+//         box-sizing: border-box;
+//         // width: 9.48rem;
+//         height: 1.133333rem;
+//         padding: .346667rem;
+//         background-color: #fff;
+//         border-bottom: 1px solid #9fa0a0;
+
+//         & > label {
+//           display: inline-block;
+//           width: 2.4rem;
+//           text-align: right;
+//           padding-right: 10px;
+//           border-right: 1px solid #404040;
+//           color: #871b41;
+//         }
+//         & > input {
+//           outline: none;
+//           border: none;
+//         }
+//         &:last-child {
+//           border: none;
+//         }
+//       }
+//     }
+
+//     .submit {
+//       background-color: #fae04b;
+//       width: 100%;
+//       height: .8rem;
+//       outline: none;
+//       border: none;
+//       border-radius: 6px;
+//       color: #e25976;
+//       font-size: .44rem;
+//       margin: .933333rem 0;
+//     }
+
+//     .tips-panel {
+
+//       box-sizing: border-box;
+//       width: 100%;
+//       border: 1px solid #fff;
+//       border-radius: 6px;
+//       overflow: hidden;
+//       padding: .346667rem;
+//       color: #fff;
+//       margin-bottom: .32rem;
+//       .tel {
+//         font-size: 1.2em;
+//         color: #fadf4b;
+//         text-decoration: underline;
+//       }
+//     }
+//   }
+// }
+
+// 闭关解锁页面
+.page-select {
+  .container {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100%;
+    // padding: .8rem .2rem 0;
+    font-size: .386667rem;
+    background: #f44c74;
+
+    .score-wrapper {
+      color: #fff;
+      font-size: .6rem;
+      text-align: center;
+      margin: 1.333333rem 0 .333333rem 0;
+      span {
+        color: #fff;
+        font-size: 0.6rem;
+      }
+    }
+
+    .level-wrapper {
+      width: 7.546667rem;
+      margin: 0 auto;
+      border: 2px solid #fff;
+      border-radius: 8px;
+      position: relative;
+
+      // .badge {
+      .sprites {
+        //box-sizing: border-box;
+        float: left;
+        margin: 7.8%;
+        flex-basis: 33%;
+        position: relative;
+        .level {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -60%);
+          color: #5b421f;
+          font-size: 1.2em;
+        }
+        &.selected:after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          border-radius: 4px;
+          width: 104%;
+          height: 104%;
+          border: 2px solid #0086b3;
+        }
+      }
+      .sprite-unlock {
+        width: 1.32rem;
+        height: 1.32rem;
+        background-position: -9.466667rem -2.84rem;
+      }
+      .sprite-locked {
+        width: 1.32rem;
+        height: 1.32rem;
+        background-position: -8.133333rem -2.84rem;
+
+      }
+
+      // }
+    }
+
+    /*向右*/
+    .triangle_border_right {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #fff;
+      margin: .4rem auto .2rem;
+      position: relative;
+    }
+    .triangle_border_right span {
+      display: inline-block;
+      position: absolute;
+      left: 75%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+
+      // 三角形
+      height: 0;
+      width: 0;
+      overflow: hidden;
+      font-size: 0;
+      line-height: 0;
+      border-color: transparent transparent transparent #FF9600;
+      border-style: solid dashed dashed dashed;
+      border-width: 20px;
+    }
+    .start-bottom {
+      margin-bottom: 2.3rem;
+    }
+    p {
+      text-align: center;
+      color: #fff;
+    }
+  }
+}
